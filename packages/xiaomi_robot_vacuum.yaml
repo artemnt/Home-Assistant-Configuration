@@ -293,6 +293,6 @@ automation:
           {% else %}
           {% endif %}
     - service: input_select.select_option
-      entity_id: input_select.vacuum_room
-      data_template:
+      data:
+        entity_id: input_select.vacuum_room
         option: "Select Input"

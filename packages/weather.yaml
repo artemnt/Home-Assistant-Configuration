@@ -63,3 +63,7 @@ weather:
     name: Melbourne Forecast
     api_key: !secret darksky_api
     mode: daily
+
+camera:
+  - platform: bom
+    location: !secret bom_location

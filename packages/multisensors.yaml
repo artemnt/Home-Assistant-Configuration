@@ -18,25 +18,10 @@ homeassistant:
       friendly_name: Living Room Tampering
 
 group:
-  multisensor:
-    name: Multisensors
-    entities:
-      - sensor.fibaro_motion_sensor_temperature
-  #    - sensor.fibaro_motion_sensor_sourcenodeid
-      - sensor.fibaro_motion_sensor_luminance
-      - sensor.fibaro_motion_sensor_seismic_intensity
-  #    - sensor.fibaro_motion_sensor_general
-  #    - sensor.fibaro_motion_sensor_burglar
-      - binary_sensor.fibaro_motion_sensor_sensor
-      - binary_sensor.tampering
-      - binary_sensor.motion_hallway
-      - sensor.temperature_bedroom
-      - sensor.humidity_bedroom
   motionsensors:
       - binary_sensor.fibaro_motion_sensor_sensor
       - binary_sensor.motion_hallway
-      - binary_sensor.motion_bedroom
-  
+      - binary_sensor.motion_bedroom  
 
 binary_sensor:
   - platform: template

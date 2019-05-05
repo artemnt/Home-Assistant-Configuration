@@ -10,12 +10,29 @@ homeassistant:
     switch.nzbget_pause:
       friendly_name: NZBGet Pause Downloads
       icon: 'mdi:pause-circle'
+    sensor.nzbget_speed:
+      friendly_name: Current NZBGet Speed
+      icon: 'mdi:download'
 
 input_boolean:
   disable_nzbget_unpause_schedule:
     name: Disable NZBGet Unpause Schedule
     initial: off
     icon: 'mdi:download'
+
+sensor:
+  - platform: nzbget
+    host: !secret nzbget_ipaddress
+    port: !secret nzbget_port
+    username: !secret nzbget_username
+    password: !secret nzbget_password
+    monitored_variables:
+      - average_download_rate
+      - download_rate
+      - download_paused
+      - download_size
+      - remaining_size
+      - uptime
 
 ## Taken from 'media_players.yaml'.
 #sensor:

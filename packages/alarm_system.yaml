@@ -5,16 +5,6 @@
 #   @description    :   MQTT Alarm System with Alarm from Xiaomi Gateway when alarm panel is Armed and triggered.
 #   @url            :   
 ###############################################################################
-group:
-  security:
-    name: Security
-    control: hidden
-    entities:
-      - lock.front_door
-      - alarm_control_panel.ha_alarm
-      - binary_sensor.fibaro_motion_sensor_sensor
-      - binary_sensor.motion_hallway
-
 # MQTT Control Panel
 alarm_control_panel:
   - platform: manual_mqtt

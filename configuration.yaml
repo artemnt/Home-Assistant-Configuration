@@ -29,17 +29,6 @@ person:
 # Enables System Health
 system_health:
 
-panel_iframe:
-# Hass Configurator Panel
-  configurator:
-    title: IDE
-    icon: mdi:wrench
-    url: !secret ide_url
-  terminal:
-    title: Terminal
-    icon: mdi:console-line
-    url: !secret terminal_url
-
 panel_custom:
 # Floorplan Panel
   - name: floorplan
@@ -70,12 +59,13 @@ logbook:
     entities:
       - sensor.uptime
       - sensor.time
+      - sensor.time_2
+      - sensor.time_utc
       - sensor.date
       - sensor.date_2
       - sensor.date_time
       - sensor.time_date
       - sensor.nzbget_speed
-
 
 # Track the sun
 sun:

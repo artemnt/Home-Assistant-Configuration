@@ -17,6 +17,8 @@ google_assistant:
   exposed_domains:
     - light
     - scene
+    - camera
+    - vacuum
   entity_config:
     script.good_night:
       expose: true
@@ -46,20 +48,22 @@ google_assistant:
       aliases:
         - Bedroom Fan
         - Ceiling Fan
-    light.entry:
+    switch.entry_light:
       name: Entry
       expose: true
       aliases:
         - Entry Light
-        - Entry Lights
+        - Entry Light
+        - Entry Switch
         - Front Light
       room: Entry
-    light.entryway:
+    switch.entryway_light:
       name: Entryway
       expose: true
       aliases:
         - Entryway Light
-        - Entryway Lights
+        - Entryway Light
+        - Entryway Switch
       room: Entryway
     switch.livingroom_light:
       name: Living Room
@@ -143,3 +147,37 @@ google_assistant:
       expose: true
     switch.reciever_power:
       expose: true
+    media_player.living_room_tv:
+      expose: true
+      aliases:
+        - Living Room TV
+        - LG TV
+        - Lounge Room TV
+      room: Living Room
+    binary_sensor.door_frontdoor:
+      expose: true
+      room: Entry
+    binary_sensor.door_backdoor:
+      expose: true
+      room: Living Room
+    binary_sensor.window_bedroom:
+      expose: true
+      room: Bedroom
+    binary_sensor.window_projectorroom:
+      expose: true
+      room: Projector Room
+    binary_sensor.window_livingroom1:
+      expose: true
+      room: Living Room
+    binary_sensor.window_livingroom2:
+      expose: true
+      room: Living Room
+    binary_sensor.window_livingroom3:
+      expose: true
+      room: Living Room
+    binary_sensor.window_diningroom1:
+      expose: true
+      room: Dining Room
+    binary_sensor.window_diningroom2:
+      expose: true
+      room: Dining Room

@@ -1,0 +1,47 @@
+###############################################################################
+#   @author         :   Trent Stanton
+#   @date           :   7/05/2018
+#   @package        :   MiLights / Limitless LEDs
+#   @description    :   MiLight Setup and Automations inc. Remote Forwarder
+#   @url            :   
+###############################################################################
+
+light:
+# MILIGHT LED MQTT
+# Commands:  milight/commands/:device_id/:device_type/:group_id
+# Updates: milight/commands/:device_id/:device_type/:group_id
+  - platform: mqtt
+    schema: json
+    name: "Entryway"
+    command_topic: milight/commands/0x11/rgb_cct/1
+    state_topic: milight/states/0x11/rgb_cct/1
+    color_temp: true
+    rgb: true
+    brightness: true
+    effect: true
+  
+  - platform: mqtt
+    schema: json
+    name: "Entry"
+    command_topic: milight/commands/0x11/rgb_cct/2
+    state_topic: milight/states/0x11/rgb_cct/2
+    color_temp: true
+    rgb: true
+    brightness: true
+    effect: true
+
+###############################################################################
+#                               Automations
+###############################################################################
+automation:
+  - alias: MiLight Remote Forwarder
+    initial_state: True
+    trigger:
+    - platform: mqtt
+      topic: milight/updates/0x21/rgb_cct/+
+    action:
+    - service: mqtt.publish
+      data_template:
+        topic: "milight/commands/0x11/rgb_cct/{{ trigger.topic.split('/')[4] }}"
+        payload_template: >
+          {{ trigger.payload }}

@@ -15,3 +15,4 @@ custom_updater:
     - python_scripts
   card_urls:
     - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/malcolmrigg/WizardClock/master/repo.json

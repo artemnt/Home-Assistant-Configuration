@@ -1,6 +1,6 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   5/04/2019
+#   @date           :   25/04/2019
 #   @package        :   Surveillance Cameras
 #   @description    :   Surveillance Cameras and Tensorflow Processing
 #   @url            :   
@@ -32,21 +32,21 @@ image_processing:
 #        - truck
 input_boolean:
   disable_camera_notifications:
-    name: Disable Welcome Home Message
+    name: Disable Camera Notifications
 # Camera Notifications even when home.
   force_enable_camera_notifications:
-    name: Force Enable Motion
+    name: Force Enable Camera Notifications
 
 ###############################################################################
 #                               Automations
 ###############################################################################
 automation:
-  - alias: Tensorflow Scan with Webhook Motion ## https://HAURL/api/webhook/frontdoor_motion and https://HAURL/api/webhook/backdeck_motion ##
+  - alias: Tensorflow Scan with Webhook Motion ## https://HAURL/api/webhook/secretwebhookid ##
     trigger:
       - platform: webhook
-        webhook_id: frontdoor_motion
+        webhook_id: !secret frontdoor_motion_webhook
       - platform: webhook
-        webhook_id: backdeck_motion
+        webhook_id: !secret backdeck_motion_webhook
     action:
       - service: image_processing.scan
         data_template:
@@ -68,7 +68,7 @@ automation:
       -  condition: and
          conditions:
            - condition: state
-             entity_id: input_boolean.disable_welcome_home
+             entity_id: input_boolean.disable_camera_notifications
              state: 'off'
            - condition: or
              conditions:
@@ -77,16 +77,16 @@ automation:
                - condition: state
                  entity_id: input_boolean.force_enable_camera_notifications
                  state: 'on'
-      - service: notify.html5_trent_galaxys8
+      - service: notify.trent
         data_template:
           title: "Home Security"
-          message: "{{ trigger.entity_id.split('.')[1].split('_')[1]|capitalize }} person detected!"
+          message: "Person detected at {{ trigger.entity_id.split('.')[1].split('_')[1] }}!"
           data:
-            image: '/local/tensorflow/{{ trigger.entity_id.split(".")[1].split("_")[1] }}_latest.jpg'
+            image: '/local/tensorflow/{{ trigger.entity_id.split(".")[1].split("_")[1] }}_latest.jpg?{{now().second}}'
             url: "/lovelace/2"
             actions:
             - action: open
-              title: "Show Video"
+              title: "Show Stream"
               url: "/lovelace/2"
             - action: alarm
-              title: "Initiate Alarm"
+              title: "Initiate Lockdown"

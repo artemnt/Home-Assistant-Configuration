@@ -13,24 +13,16 @@ notify:
   - name: trent_and_rachel
     platform: group
     services:
-      - service: html5
-        data:
-          target: "trent_galaxys8"
-      - service: ios
-        data:
-          target: "rachels_iphone"
+      - service: html5_trent_galaxys8
+      - service: ios_rachels_iphone
   - name: trent
     platform: group
     services:
-      - service: html5
-        data:
-          target: "trent_galaxys8"
+      - service: html5_trent_galaxys8
   - name: rachel
     platform: group
     services:
-      - service: ios
-        data:
-          target: "rachels_iphone"
+      - service: ios_rachels_iphone
 # Google Assistant Web Server API - https://github.com/robwolff3/google-assistant-webserver
   - name: google_assistant_broadcast
     platform: rest

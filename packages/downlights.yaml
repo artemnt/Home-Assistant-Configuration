@@ -1,13 +1,23 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   7/05/2018
-#   @package        :   Downlights / MiLights / Limitless LEDs
-#   @description    :   MiLight Setup and Downlight Automations inc. Remote Forwarder,Auto Entryway Light, Auto Entry Light
+#   @date           :   5/05/2019
+#   @package        :   Downlights
+#   @description    :   Automations inc. Auto Entryway Light, Auto Entry Light
 #   @url            :   
 ###############################################################################
+homeassistant:
+  customize:
+    switch.livingroom_light:
+      icon: mdi:lightbulb
+    switch.kitchen_light:
+      icon: mdi:lightbulb
+    switch.entry_light:
+      icon: mdi:lightbulb
+    switch.entryway_light:
+      icon: mdi:lightbulb
 input_boolean:
-  disable_entry_light_trent_home:
-    name: Disable Entry Light When Trent Home
+  disable_entry_light_person_detected:
+    name: Disable Entry Light When Person Detected
     initial: off
     icon: mdi:home
   disable_entryway_light_frontdoor:
@@ -18,55 +28,22 @@ input_boolean:
     name: Disable Living Room Light When Frontdoor Open
     initial: off
     icon: mdi:home
-
-light:
-# MILIGHT LED MQTT
-# Commands:  milight/commands/:device_id/:device_type/:group_id
-# Updates: milight/commands/:device_id/:device_type/:group_id
-  - platform: mqtt
-    schema: json
-    name: "Entryway"
-    command_topic: milight/commands/0x11/rgb_cct/1
-    state_topic: milight/states/0x11/rgb_cct/1
-    color_temp: true
-    rgb: true
-    brightness: true
-    effect: true
-  
-  - platform: mqtt
-    schema: json
-    name: "Entry"
-    command_topic: milight/commands/0x11/rgb_cct/2
-    state_topic: milight/states/0x11/rgb_cct/2
-    color_temp: true
-    rgb: true
-    brightness: true
-    effect: true
+#  disable_entry_light_trent_rachel_home:
+#    name: Disable Entry Light When Trent or Rachel Home
+#    initial: off
+#    icon: mdi:home
 
 ###############################################################################
 #                               Automations
 ###############################################################################
 automation:
-  - alias: MiLight Remote Forwarder
-    initial_state: True
-    trigger:
-    - platform: mqtt
-      topic: milight/updates/0x21/rgb_cct/+
-    action:
-    - service: mqtt.publish
-      data_template:
-        topic: "milight/commands/0x11/rgb_cct/{{ trigger.topic.split('/')[4] }}"
-        payload_template: >
-          {{ trigger.payload }}
 
-  - alias: Entry Light Trent or Rachel Arrive Home
+  - alias: Entry Light Front Door Person Detected
     trigger:
-    - platform: state
-      entity_id: device_tracker.google_maps_109209758211303121867
-      to: home
-    - platform: state
-      entity_id: device_tracker.rachels_iphone
-      to: home
+      - platform: numeric_state
+        entity_id:
+          - image_processing.tensorflow_frontdoor
+        above: '0'
     condition:
       condition: and
       conditions:
@@ -74,19 +51,19 @@ automation:
         after: sunset
         after_offset: -0:30:00
       - condition: state
-        entity_id: light.entry
+        entity_id: switch.entry_light
         state: 'off'
       - condition: state
-        entity_id: input_boolean.disable_entry_light_trent_home
+        entity_id: input_boolean.disable_entry_light_person_detected
         state: 'off'
     action:
     - service: light.turn_on
-      entity_id: light.entry
-    - delay: '00:10:00'
+      entity_id: switch.entry_light
+    - delay: '00:01:00'
     - service: light.turn_off
-      entity_id: light.entry
+      entity_id: switch.entry_light
 
-  - alias: Entryway & Living Room Light Front Door
+  - alias: Entryway Light Front Door Opens
     trigger:
     - platform: state 
       entity_id: binary_sensor.door_frontdoor
@@ -98,17 +75,17 @@ automation:
         after: sunset
         after_offset: -0:30:00
       - condition: state
-        entity_id: light.entryway
+        entity_id: switch.entryway_light
         state: 'off'
       - condition: state
         entity_id: input_boolean.disable_entryway_light_frontdoor
         state: 'off'
     action:
     - service: light.turn_on
-      entity_id: light.entryway
-    - delay: '00:10:00'
+      entity_id: switch.entryway_light
+    - delay: '00:05:00'
     - service: light.turn_off
-      entity_id: light.entryway
+      entity_id: switch.entryway_light
       
   - alias: Living Room Light Arriving Front Door
     trigger:
@@ -140,3 +117,30 @@ automation:
     action:
     - service: switch.turn_on
       entity_id: switch.livingroom_light
+
+#  - alias: Entry Light Trent or Rachel Arrive Home
+#    trigger:
+#    - platform: state
+#      entity_id: device_tracker.google_maps_109209758211303121867
+#      to: home
+#    - platform: state
+#      entity_id: device_tracker.rachels_iphone
+#      to: home
+#    condition:
+#      condition: and
+#      conditions:
+#      - condition: sun
+#        after: sunset
+#        after_offset: -0:30:00
+#      - condition: state
+#        entity_id: switch.entry_light
+#        state: 'off'
+#      - condition: state
+#        entity_id: input_boolean.disable_entry_light_trent_rachel_home
+#        state: 'off'
+#    action:
+#    - service: light.turn_on
+#      entity_id: switch.entry_light
+#    - delay: '00:10:00'
+#    - service: light.turn_off
+#      entity_id: switch.entry_light

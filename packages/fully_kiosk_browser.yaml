@@ -14,15 +14,6 @@ homeassistant:
      name: Fully Kiosk Sensor
      icon: 'mdi:tablet'
 
-group:
-  fkiosk:
-    name: Fully Kiosk
-    control: hidden
-    entities:
-      - switch.fkiosk_screen
-      - sensor.fkiosk
-      - input_boolean.disable_fully_kiosk_screen_front_door
-
 input_boolean:
   disable_fully_kiosk_screen_front_door:
     name: Disable Fully Kiosk Screen Front Door

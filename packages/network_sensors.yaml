@@ -13,9 +13,6 @@ homeassistant:
       icon: 'mdi:speedometer'
     sensor.speedtest_ping:
       icon: 'mdi:speedometer'
-    sensor.nzbget_speed:
-      friendly_name: Current NZBGet Speed
-      icon: 'mdi:download'
     sensor.xboxones:
       icon: 'mdi:xbox'
     sensor.xboxonex:
@@ -37,43 +34,9 @@ homeassistant:
     sensor.livingroomtv:
       icon: 'mdi:television'
 
-group:
-  network:
-    name: Network
-    control: hidden
-    entities:
-      - sensor.speedtest_ping
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
-      - sensor.nzbget_speed
-      - switch.nzbget_switch
-      - sensor.uptime
-      - sensor.xiaomigateway
-      - sensor.livingroomgooglehome
-      - sensor.bedroomgooglehomemini
-      - sensor.livingroomtv
-      - sensor.livingroomchromecast
-      - sensor.bedroomchromecast
-      - sensor.outsidechromecast
-      - sensor.xboxonex
-      - sensor.xboxones
-      - sensor.ps4
-
 sensor:
 # Uptime Sensor
   - platform: uptime
-# NZBGet Monitoring
-  - platform: nzbget
-    host: !secret nzbget_ipaddress
-    username: !secret nzbget_username
-    password: !secret nzbget_password
-    monitored_variables:
-      - average_download_rate
-      - download_rate
-      - download_paused
-      - download_size
-      - remaining_size
-      - uptime
 # Device Tracking + Activity Templates
   - platform: template
     sensors:
