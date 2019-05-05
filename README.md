@@ -41,6 +41,7 @@
 
 # Automations
 * Voice Notifications on Google Home's via [Google Assistant Webserver](https://community.home-assistant.io/t/community-hass-io-add-on-google-assistant-webserver-broadcast-messages-without-interrupting-music/37274) on Hassio
+* Tensorflow - Notification alerts and Video Recording when people are identified on cameras. [surveillance_cameras.yaml](https://github.com/stanvx/Home-Assistant-Configuration/blob/master/packages/surveillance_cameras.yaml)
 * Stream radio stations onto Chromecasts and control their volume.
 * On motion from [Fibaro Multisensor](https://www.fibaro.com/en/products/motion-sensor) turn on lights.
 * Burgular Alarm from Xiaomi Gateway when alarm panel is Armed and triggered.
@@ -88,7 +89,7 @@
 # Photos
 ![LENOVOTAB4](https://raw.githubusercontent.com/stanvx/Home-Assistant-Configuration/master/screenshots/LENOVOTAB4.png)
 
-Configuration files are being edited with Cloud9 IDE [Hass.io Add-on](https://github.com/hassio-addons/addon-ide).
+Configuration files are being edited with VSCode IDE [Hass.io Add-on](https://github.com/hassio-addons/addon-vscode).
 
 Configuration files are tested against the most stable version of home-assistant using [Travis](https://travis-ci.org/stanvx/Home-Assistant-Configuration).
 

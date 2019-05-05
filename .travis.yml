@@ -2,6 +2,8 @@ language: python
 python:
   - "3.6.4"
 before_install:
+  - sudo mkdir /share
+  - mv packages/surveillance_cameras.yaml packages/surveillance_cameras.yaml.ignore
   - mv travis_secrets.yaml secrets.yaml
 install:
   - pip3 install homeassistant
