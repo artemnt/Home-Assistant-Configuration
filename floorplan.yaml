@@ -82,9 +82,9 @@
              - light.rachel_bedside
              - switch.outside_heater
              - light.study_desk_lamp
-             - light.entryway
-             - light.entry
-             - switch.livingroom_light
+             - switch.entryway_light
+             - switch.entry_light
+             - light.livingroom
              - switch.kitchen_light
              - light.dining_room
              - light.study

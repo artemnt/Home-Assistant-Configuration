@@ -1,6 +1,6 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   10/03/2018
+#   @date           :   29/05/2019
 #   @package        :   UPS
 #   @description    :   
 #   @url            :   
@@ -11,17 +11,6 @@ homeassistant:
       icon: mdi:information-outline
     sensor.ups_battery_runtime_mins:
       icon: mdi:timer
-
-group:
-  ups:
-    name: "UPS"
-    control: hidden
-    entities:
-      - sensor.ups_status
-      - sensor.ups_load
-      - sensor.ups_battery_runtime_mins
-      - sensor.ups_battery_charge
-
 sensor:
 # Translate UPS Status / Runtime
   - platform: template
@@ -86,9 +75,10 @@ automation:
       entity_id: sensor.ups_status_data
       to: 'OB DISCHRG'
     action:
-    - service: notify.trent
-      data:
-        message: "Power Alert! The UPS has switched to Battery Power."
+    - service: notify.telegram_trent
+      data_template:
+        title: Power Alert
+        message: The UPS has switched to Battery Power.
         
   - alias: 'Send notification when UPS is low battery'
     trigger:
@@ -96,9 +86,10 @@ automation:
       entity_id: sensor.ups_status_data
       to: 'LB'
     action:
-    - service: notify.trent
-      data:
-        message: "Power Alert! The UPS has got Low Power."
+    - service: notify.telegram_trent
+      data_template:
+        title: Power Alert
+        message: The UPS has got Low Power.
   
   - alias: 'Send notification when UPS is back on line'
     trigger:
@@ -106,6 +97,7 @@ automation:
       entity_id: sensor.ups_status_data
       to: 'OL CHRG'
     action:
-    - service: notify.trent
-      data:
-        message: "Power Alert! The UPS is back On line."
+    - service: notify.telegram_trent
+      data_template:
+        title: Power Alert
+        message: The UPS is back Online.

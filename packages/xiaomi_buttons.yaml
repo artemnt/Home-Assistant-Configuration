@@ -64,13 +64,13 @@ script:
     sequence:
       - service: light.toggle
         data:
-          entity_id: light.entryway
+          entity_id: switch.entryway_light
 ## Entryway Wall Switch - Entry Light
   wall_switch_entryway_right:
     sequence:
       - service: light.toggle
         data:
-          entity_id: light.entry
+          entity_id: switch.entry_light
 
 ###############################################################################
 #                               Automations

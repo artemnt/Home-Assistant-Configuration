@@ -24,20 +24,6 @@ homeassistant:
     sensor.status_volume_3:
       friendly_name: Volume 3 Status
 
-group:
-  synology:
-    name: "Synology"
-    control: hidden
-    entities:
-      - sensor.cpu_load_total
-      - sensor.memory_usage_real
-      - sensor.status_volume_1
-      - sensor.volume_used_volume_1
-      - sensor.status_volume_2
-      - sensor.volume_used_volume_2
-      - sensor.maximum_disk_temp_volume_2
-      - sensor.status_volume_3
-
 sensor:
 # Synology
   - platform: synologydsm
@@ -50,4 +36,5 @@ sensor:
       - disk_status
       - volume_status
       - volume_percentage_used
+      - disk_temp
       - volume_disk_temp_max

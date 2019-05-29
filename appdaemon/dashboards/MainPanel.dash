@@ -134,7 +134,7 @@ hallway_motion:
 entry_light:
     widget_type: light
     title: Entry Light
-    entity: light.entry
+    entity: switch.entry_light
     icon_on: mdi-lightbulb
     icon_off: mdi-lightbulb
     widget_style: "font-size: 120%"
@@ -150,7 +150,7 @@ entry_light:
 entryway_light:
     widget_type: light
     title: Entryway Light
-    entity: light.entryway
+    entity: switch.entryway_light
     icon_on: mdi-lightbulb
     icon_off: mdi-lightbulb
     widget_style: "font-size: 120%"
@@ -214,7 +214,7 @@ trent_bedside_light:
 living_room_light_switch:
     widget_type: switch
     title: Living Room Light
-    entity: switch.livingroom_light
+    entity: light.livingroom
     icon_on: mdi-lightbulb
     icon_off: mdi-lightbulb
     widget_style: "font-size: 120%"

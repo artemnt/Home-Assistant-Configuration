@@ -1,6 +1,6 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   25/04/2019
+#   @date           :   18/05/2019
 #   @package        :   Surveillance Cameras
 #   @description    :   Surveillance Cameras and Tensorflow Processing
 #   @url            :   
@@ -21,8 +21,8 @@ image_processing:
       - entity_id: camera.frontdoor
       - entity_id: camera.backdeck
     file_out:
-      - "/config/www/tensorflow/{{ camera_entity.split('.')[1] }}_latest.jpg"
-      - "/config/www/tensorflow/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+      - "/share/images/{{ camera_entity.split('.')[1] }}_latest.jpg"
+      - "/share/images/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
     model:
       graph: /config/tensorflow/frozen_inference_graph.pb
       categories:
@@ -77,16 +77,92 @@ automation:
                - condition: state
                  entity_id: input_boolean.force_enable_camera_notifications
                  state: 'on'
-      - service: notify.trent
+      - service: notify.telegram_trent
         data_template:
           title: "Home Security"
           message: "Person detected at {{ trigger.entity_id.split('.')[1].split('_')[1] }}!"
           data:
-            image: '/local/tensorflow/{{ trigger.entity_id.split(".")[1].split("_")[1] }}_latest.jpg?{{now().second}}'
-            url: "/lovelace/2"
-            actions:
-            - action: open
-              title: "Show Stream"
-              url: "/lovelace/2"
-            - action: alarm
-              title: "Initiate Lockdown"
+            photo:
+            - file: /share/images/{{ trigger.entity_id.split(".")[1].split("_")[1] }}_latest.jpg
+              caption: "Person detected at {{ trigger.entity_id.split('.')[1].split('_')[1] }}!"
+            inline_keyboard:
+            - "Show Video:/showvideo, Arm Home:/armhome"
+  - alias: 'Telegram bot callback /armhome'
+    trigger:
+      platform: event
+      event_type: telegram_callback
+      event_data:
+        data: '/armhome'
+    action:
+      - service: alarm_control_panel.alarm_arm_away
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code
+      - service: telegram_bot.answer_callback_query
+        data_template:
+          callback_query_id: '{{ trigger.event.data.id }}'
+          message: 'Home has been armed.'
+      - service: telegram_bot.edit_replymarkup
+        data_template:
+          message_id: '{{ trigger.event.data.message.message_id }}'
+          chat_id: '{{ trigger.event.data.user_id }}'
+          inline_keyboard:
+            - "Disarm:/disarmhome, Trigger Alarm:/alarm"
+  - alias: 'Telegram bot callback /alarm'
+    trigger:
+      platform: event
+      event_type: telegram_callback
+      event_data:
+        data: '/alarm'
+    action:
+      - service: alarm_control_panel.alarm_trigger
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code
+      - service: telegram_bot.answer_callback_query
+        data_template:
+          callback_query_id: '{{ trigger.event.data.id }}'
+          message: 'Home alarm has been triggered.'
+      - service: telegram_bot.edit_replymarkup
+        data_template:
+          message_id: '{{ trigger.event.data.message.message_id }}'
+          chat_id: '{{ trigger.event.data.user_id }}'
+          inline_keyboard:
+            - "Disarm:/disarmhome"
+  - alias: 'Telegram bot callback /disarmhome'
+    trigger:
+      platform: event
+      event_type: telegram_callback
+      event_data:
+        data: '/disarmhome'
+    action:
+      - service: alarm_control_panel.alarm_disarm
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code
+      - service: telegram_bot.answer_callback_query
+        data_template:
+          callback_query_id: '{{ trigger.event.data.id }}'
+          message: 'Home has been disarmed.'
+      - service: telegram_bot.edit_replymarkup
+        data_template:
+          message_id: '{{ trigger.event.data.message.message_id }}'
+          chat_id: '{{ trigger.event.data.user_id }}'
+          inline_keyboard: []
+# Telegram Video Example
+#    action:
+#    - service: shell_command.ipcam_sh
+#    - wait_template: "{{ is_state('sensor.cam_done', '1') }}"
+#      timeout: '00:00:40'
+#      continue_on_timeout: 'true'
+#    - service: telegram_bot.send_video
+#      data_template:
+#        file: /config/ffmpeg/{{ states('sensor.cam_file')}}
+#    - service: telegram_bot.send_message
+#      data_template:
+#        target: 'xxxxxxxx'
+#        message: " Stand: {{ states('sensor.cam_file')}} Es ist {{now().strftime('%H:%M:%S %Y-%m-%d')}} /vid um es noch mal zu senden."
+
+# Utilize Video File names as to ensure the times match up: "/tmp/capture_{{ as_timestamp(trigger.to_state.attributes.last_tripped_time) | int }}_{{ trigger.entity_id[-1] }}.mp4"
+# Create a MQTT State / MQTT Sensor / Replace sensor each time video.
+# Maybe some way to pass the variable through via the Telegram Notification

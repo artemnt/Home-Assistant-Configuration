@@ -10,6 +10,9 @@ notify:
     vapid_pub_key: !secret html5_vapid_pub_key
     vapid_prv_key: !secret html5_vapid_prv_key
     vapid_email: !secret html5_vapid_email
+  - name: telegram_trent
+    platform: telegram
+    chat_id: !secret telegram_chat_id_trent
   - name: trent_and_rachel
     platform: group
     services:
@@ -34,3 +37,9 @@ notify:
     host: !secret webostv_host
     name: living_room_tv
 #    icon: "haicon.png"
+
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_api
+    allowed_chat_ids:
+      - !secret telegram_chat_id_trent

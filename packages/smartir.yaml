@@ -1,0 +1,26 @@
+###############################################################################
+#   @author         :   Trent Stanton
+#   @date           :   5/05/2019
+#   @package        :   Smartir Custom Component
+#   @description    :   Smartir for AC / Fan
+#   @url            :   
+###############################################################################
+
+smartir:
+  update_branch: rc
+
+fan:
+  - platform: smartir
+    name: Bedroom Fan
+    unique_id: bedroom_fan
+# Test Devicecode
+    device_code: 1066
+    controller_data: !secret broadlink_rm2_pro_plus
+
+climate:
+  - platform: smartir
+    name: Living Room AC
+    unique_id: living_room_ac
+    device_code: 1160
+    controller_data: !secret broadlink_rm1_ip
+    temperature_sensor: sensor.fibaro_motion_sensor_temperature

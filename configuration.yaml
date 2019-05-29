@@ -39,6 +39,7 @@ panel_custom:
 
 # Checks for available updates
 updater:
+  reporting: false
 
 # Discover some devices automatically
 discovery:

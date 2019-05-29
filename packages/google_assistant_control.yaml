@@ -43,7 +43,7 @@ google_assistant:
       aliases:
         - AC
         - Air Con
-    switch.fan:
+    fan.bedroom_fan:
       expose: true
       aliases:
         - Bedroom Fan
@@ -65,7 +65,7 @@ google_assistant:
         - Entryway Light
         - Entryway Switch
       room: Entryway
-    switch.livingroom_light:
+    light.livingroom:
       name: Living Room
       expose: true
       aliases:
@@ -89,6 +89,14 @@ google_assistant:
         - Kitchen Light
         - Kitchen Lights
         - Kitchen Switch
+      room: Kitchen
+    switch.diningroom_light:
+      name: Dining room
+      expose: true
+      aliases:
+        - Dining room Light
+        - Dining room Lights
+        - Dining room Switch
       room: Kitchen
     light.trent_bedside:
       name: Trent Bedside

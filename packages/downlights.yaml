@@ -1,13 +1,13 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   5/05/2019
+#   @date           :   18/05/2019
 #   @package        :   Downlights
 #   @description    :   Automations inc. Auto Entryway Light, Auto Entry Light
 #   @url            :   
 ###############################################################################
 homeassistant:
   customize:
-    switch.livingroom_light:
+    switch.diningroom_light:
       icon: mdi:lightbulb
     switch.kitchen_light:
       icon: mdi:lightbulb
@@ -24,14 +24,20 @@ input_boolean:
     name: Disable Entryway Light When Frontdoor Open
     initial: off
     icon: mdi:home
+  disable_entry_light_frontdoor:
+    name: Disable Entry Light When Frontdoor Open
+    initial: off
+    icon: mdi:home
   disable_livingroom_light_frontdoor:
     name: Disable Living Room Light When Frontdoor Open
     initial: off
     icon: mdi:home
-#  disable_entry_light_trent_rachel_home:
-#    name: Disable Entry Light When Trent or Rachel Home
-#    initial: off
-#    icon: mdi:home
+scene:
+  - name: Living Room Light Full
+    entities:
+      light.livingroom:
+        state: true
+        brightness_pct: '100'
 
 ###############################################################################
 #                               Automations
@@ -57,10 +63,34 @@ automation:
         entity_id: input_boolean.disable_entry_light_person_detected
         state: 'off'
     action:
-    - service: light.turn_on
+    - service: switch.turn_on
       entity_id: switch.entry_light
     - delay: '00:01:00'
-    - service: light.turn_off
+    - service: switch.turn_off
+      entity_id: switch.entry_light
+
+  - alias: Entry Light Front Door Opens
+    trigger:
+    - platform: state 
+      entity_id: binary_sensor.door_frontdoor
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+      - condition: sun
+        after: sunset
+        after_offset: -0:30:00
+      - condition: state
+        entity_id: switch.entry_light
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.disable_entry_light_frontdoor
+        state: 'off'
+    action:
+    - service: switch.turn_on
+      entity_id: switch.entry_light
+    - delay: '00:02:00'
+    - service: switch.turn_off
       entity_id: switch.entry_light
 
   - alias: Entryway Light Front Door Opens
@@ -81,10 +111,10 @@ automation:
         entity_id: input_boolean.disable_entryway_light_frontdoor
         state: 'off'
     action:
-    - service: light.turn_on
+    - service: switch.turn_on
       entity_id: switch.entryway_light
-    - delay: '00:05:00'
-    - service: light.turn_off
+    - delay: '00:02:00'
+    - service: switch.turn_off
       entity_id: switch.entryway_light
       
   - alias: Living Room Light Arriving Front Door
@@ -99,7 +129,7 @@ automation:
         after: sunset
         after_offset: -0:30:00
       - condition: state
-        entity_id: switch.livingroom_light
+        entity_id: light.livingroom
         state: 'off'
       - condition: state
         entity_id: input_boolean.disable_livingroom_light_frontdoor
@@ -115,32 +145,5 @@ automation:
         for:
           minutes: 10
     action:
-    - service: switch.turn_on
-      entity_id: switch.livingroom_light
-
-#  - alias: Entry Light Trent or Rachel Arrive Home
-#    trigger:
-#    - platform: state
-#      entity_id: device_tracker.google_maps_109209758211303121867
-#      to: home
-#    - platform: state
-#      entity_id: device_tracker.rachels_iphone
-#      to: home
-#    condition:
-#      condition: and
-#      conditions:
-#      - condition: sun
-#        after: sunset
-#        after_offset: -0:30:00
-#      - condition: state
-#        entity_id: switch.entry_light
-#        state: 'off'
-#      - condition: state
-#        entity_id: input_boolean.disable_entry_light_trent_rachel_home
-#        state: 'off'
-#    action:
-#    - service: light.turn_on
-#      entity_id: switch.entry_light
-#    - delay: '00:10:00'
-#    - service: light.turn_off
-#      entity_id: switch.entry_light
+    - service: light.turn_on
+      entity_id: light.livingroom

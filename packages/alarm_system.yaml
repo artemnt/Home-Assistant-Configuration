@@ -1,6 +1,6 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   10/02/2018
+#   @date           :   29/05/2019
 #   @package        :   Alarm System
 #   @description    :   MQTT Alarm System with Alarm from Xiaomi Gateway when alarm panel is Armed and triggered.
 #   @url            :   
@@ -11,6 +11,8 @@ alarm_control_panel:
     state_topic: "home/alarm"
     command_topic: "home/alarm/set"
     code: !secret alarm_code
+    triggered:
+      pending_time: 0
 
 ###############################################################################
 #                               Automations
@@ -23,13 +25,13 @@ automation:
       entity_id: binary_sensor.fibaro_motion_sensor_sensor
       to: 'on'
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00015b5ae2
+      entity_id: binary_sensor.motion_kitchen
       to: 'on'
     - platform: state
       entity_id: binary_sensor.motion_hallway
       to: 'on'
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00016be35b
+      entity_id: binary_sensor.motion_bedroom
       to: 'on'
     - platform: state
       entity_id: binary_sensor.door_backdoor
@@ -45,38 +47,56 @@ automation:
     - service: alarm_control_panel.alarm_trigger
       entity_id: alarm_control_panel.ha_alarm
   
-# Start Police Siren on Alarm Trigger via Xiaomi Gateway
+# Start Alarm on Alarm Trigger via Media Player
   
-  - alias: Start Police Siren on Alarm Trigger
+  - alias: Start Siren on Alarm Trigger
     trigger:
     - platform: state
       entity_id: alarm_control_panel.ha_alarm
       to: 'triggered'
     action:
-    - service: xiaomi.play_ringtone
-      data:
-        gw_mac: !secret xiaomimac
-        ringtone_id: 10001
-        ringtone_vol: 100
-    - service: light.turn_on
-      entity_id: group.all_lights
-    - service: notify.trent
-      data:
-        message: "Police Siren has been triggered at home"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.home_group
+        volume_level: 1.0
+    - service: media_player.play_media
+      data_template:
+        entity_id: media_player.home_group
+        media_content_id: !secret alarm_media_url
+        media_content_type: audio/mp3
+    - service: homeassistant.turn_on
+      entity_id: 
+      - group.all_lights
+      - switch.entry_light
+      - switch.entryway_light
+      - switch.kitchen_light
+      - switch.diningroom_light
+    - service: notify.telegram_trent
+      data_template:
+        title: Intruder Alarm
+        message: Alarm has been triggered at home!
         data:
-          actions:
-          - action: open
-            title: Open Home Assistant
-            url: !secret base_url
-  
-# Stop Police Siren via Xiaomi Gateway
-  
-  - alias: Stop Police Siren
+          inline_keyboard:
+          - "Disarm:/disarmhome"
+# Disarm Callback to surveillance_cameras.yaml
+# Stop Alarm via Media Player
+  - alias: Stop Siren
     trigger:
     - platform: state
       entity_id: alarm_control_panel.ha_alarm
       from: 'triggered'
     action:
-      service: xiaomi.stop_ringtone
-      data:
-        gw_mac: !secret xiaomimac  
+    - service: media_player.media_stop
+      data_template:
+        entity_id: media_player.home_group
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.home_group
+        volume_level: 0.4
+    - service: homeassistant.turn_off
+      entity_id: 
+      - group.all_lights
+      - switch.entry_light
+      - switch.entryway_light
+      - switch.kitchen_light
+      - switch.diningroom_light

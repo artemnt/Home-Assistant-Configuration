@@ -209,7 +209,7 @@ automation:
           {% if (is_state('device_tracker.google_maps_109209758211303121867', 'home')) and (is_state('device_tracker.rachels_iphone', 'home'))  %}
             notify.trent_and_rachel
           {% elif is_state('device_tracker.google_maps_109209758211303121867', 'home') %}
-            notify.trent
+            notify.telegram_trent
           {% elif is_state('device_tracker.rachels_iphone', 'home') %}
             notify.rachel
           {% endif %}

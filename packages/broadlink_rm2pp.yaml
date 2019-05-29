@@ -1,0 +1,13 @@
+###############################################################################
+#   @author         :   Trent Stanton
+#   @date           :   5/05/2019
+#   @package        :   
+#   @description    :   Broadlink RM2 Pro Plus - Fan Control via SmartIR Component
+#   @url            :   
+###############################################################################
+switch:
+  - platform: broadlink
+    host: !secret broadlink_rm2_pro_plus
+    mac: '34:EA:34:43:31:7D'
+    friendly_name: 'Bedroom Remote'
+    timeout: 15

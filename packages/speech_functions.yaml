@@ -10,30 +10,21 @@ homeassistant:
     switch.air_conditioner:
       friendly_name: Air Conditioner
       icon: mdi:air-conditioner
-    switch.fan:
-      friendly_name: Fan
-      icon: mdi:fan
+#    switch.fan:
+#      friendly_name: Fan
+#      icon: mdi:fan
     script.start_air_conditioner:
       friendly_name: Start Air Conditioner
       icon: mdi:air-conditioner
     script.stop_air_conditioner:
       friendly_name: Stop Air Conditioner
       icon: mdi:air-conditioner
-    script.start_fan:
-      friendly_name: Start Fan
-      icon: mdi:fan
-    script.stop_fan:
-      friendly_name: Stop Fan
-      icon: mdi:fan
-
-group:
-  speech_functions:
-    name: Speech Functions
-    control: hidden
-    entities:
-      - input_boolean.lastmsg
-      - switch.air_conditioner
-      - switch.fan
+#    script.start_fan:
+#      friendly_name: Start Fan
+#      icon: mdi:fan
+#    script.stop_fan:
+#      friendly_name: Stop Fan
+#      icon: mdi:fan
 
 script:
   start_air_conditioner:
@@ -60,22 +51,22 @@ script:
         data:
           entity_id: input_select.ac_operation_mode
           option: Power Off
-  start_fan:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.fan_operation_mode
-          option: Forward
-      - service: input_number.set_value
-        data:
-          entity_id: input_number.fan_speed
-          value: 3
-  stop_fan:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.fan_operation_mode
-          option: Power Off
+#  start_fan:
+#    sequence:
+#      - service: input_select.select_option
+#        data:
+#          entity_id: input_select.fan_operation_mode
+#          option: Forward
+#      - service: input_number.set_value
+#        data:
+#          entity_id: input_number.fan_speed
+#          value: 3
+#  stop_fan:
+#    sequence:
+#      - service: input_select.select_option
+#        data:
+#          entity_id: input_select.fan_operation_mode
+#          option: Power Off
   good_night:
     sequence:
       - service: homeassistant.turn_off
@@ -83,7 +74,16 @@ script:
           entity_id: group.all_lights
       - service: homeassistant.turn_off
         data:
-          entity_id: switch.livingroom_light
+          entity_id: light.livingroom
+      - service: homeassistant.turn_off
+        data:
+          entity_id: switch.diningroom_light
+      - service: homeassistant.turn_off
+        data:
+          entity_id: switch.entry_light
+      - service: homeassistant.turn_off
+        data:
+          entity_id: switch.entryway_light
       - service: homeassistant.turn_off
         data:
           entity_id: switch.kitchen_light
@@ -159,14 +159,14 @@ switch:
         turn_off:
           service: script.turn_on
           entity_id: script.stop_air_conditioner
-      fan:
-        entity_id:
-          - input_select.fan_operation_mode
-          - script.start_fan
-        value_template: "{{ is_state('input_select.fan_operation_mode', 'Forward') }}"
-        turn_on:
-          service: script.turn_on
-          entity_id: script.start_fan
-        turn_off:
-          service: script.turn_on
-          entity_id: script.stop_fan
+#      fan:
+#        entity_id:
+#          - input_select.fan_operation_mode
+#          - script.start_fan
+#        value_template: "{{ is_state('input_select.fan_operation_mode', 'Forward') }}"
+#        turn_on:
+#          service: script.turn_on
+#          entity_id: script.start_fan
+#        turn_off:
+#          service: script.turn_on
+#          entity_id: script.stop_fan

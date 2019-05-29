@@ -337,30 +337,27 @@ automation:
             entity_id: sensor.recycle_day
             state: 'yes'
     action:
-      - service: notify.trent
+      - service: notify.telegram_trent
         data_template:
           title: >
-            {% if is_state("sensor.trash_day", "yes") and is_state("sensor.recycle_day", "yes") %}
-              Trash and Recycle Pickup Tomorrow!
-            {% elif states.sensor.trash_day.state == "yes" %}
+            {% if is_state('sensor.trash_day', 'yes') and is_state('sensor.recycle_day', 'yes') %}
+              Trash and Recycle Pickup Tomorrow!'
+            {% elif states.sensor.trash_day.state == 'yes' %}
               Trash Pickup Tomorrow!
-            {% elif states.sensor.recycle_day.state == "yes" %}
+            {% elif states.sensor.recycle_day.state == 'yes' %}
               Recycle Pickup Tomorrow!
             {% endif %}
           message: >
-            {% if is_state("sensor.trash_day", "yes") and is_state("sensor.recycle_day", "yes") %}
+            {% if is_state('sensor.trash_day', 'yes') and is_state('sensor.recycle_day', 'yes') %}
               Please leave trash and recycle bin outside tonight. Thank you!
-            {% elif states.sensor.trash_day.state == "yes" %}
+            {% elif states.sensor.trash_day.state == 'yes' %}
               Please leave trash bin outside tonight. Thank you!
-            {% elif states.sensor.recycle_day.state == "yes" %}
+            {% elif states.sensor.recycle_day.state == 'yes' %}
               Please leave recycle bin outside tonight. Thank you!
             {% endif %}
           data:
-            actions:
-            - action: TRASH_LEFT
-              title: Done
-            - action: TRASH_REMIND_LATER
-              title: Remind Later
+            inline_keyboard:
+            - "Done:/trash_left, Remind Later:/trash_remind_later"
       - service: script.speech_processing
         data_template:
           speech_message: >
@@ -373,18 +370,24 @@ automation:
               Attention!: Tomorrow is the Recycle Pickup day.
               Please don't forget to put the recycle bin outside tonight!
             {% endif %}
-  - alias: Trash and Recycle Bin Left Outside Already
+  - alias: Trash and Recycle Bin Left Outside Already callback /trash_left
     initial_state: true
     hide_entity: true
     trigger:
       platform: event
-      event_type: html5_notification.clicked
+      event_type: telegram_callback
       event_data:
-        action: TRASH_LEFT
+        data: '/trash_left'
     action:
-      - service: notify.trent
-        data:
-          message: "Great job, Thank you!"
+      - service: telegram_bot.answer_callback_query
+        data_template:
+          callback_query_id: '{{ trigger.event.data.id }}'
+          message: 'Great job, Thank you!'
+      - service: telegram_bot.edit_replymarkup
+        data_template:
+          message_id: '{{ trigger.event.data.message.message_id }}'
+          chat_id: '{{ trigger.event.data.user_id }}'
+          inline_keyboard: []
       - service: input_boolean.turn_off
         entity_id: input_boolean.trash_reminders
 
@@ -393,13 +396,19 @@ automation:
     hide_entity: true
     trigger:
       platform: event
-      event_type: html5_notification.clicked
+      event_type: telegram_callback
       event_data:
-        action: TRASH_REMIND_LATER
+        data: '/trash_remind_later'
     action:
-      - service: notify.trent
-        data:
-          message: "Will remind you again in an hour!"
+      - service: telegram_bot.answer_callback_query
+        data_template:
+          callback_query_id: '{{ trigger.event.data.id }}'
+          message: 'Will remind you again in an hour!'
+      - service: telegram_bot.edit_replymarkup
+        data_template:
+          message_id: '{{ trigger.event.data.message.message_id }}'
+          chat_id: '{{ trigger.event.data.user_id }}'
+          inline_keyboard: []
       - service: input_boolean.turn_on
         entity_id: input_boolean.trash_reminders
 

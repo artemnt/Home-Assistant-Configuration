@@ -1,0 +1,25 @@
+###############################################################################
+#   @author         :   Trent Stanton
+#   @date           :   17/05/2019
+#   @package        :   Updates
+#   @description    :   Mainains Home Assistant Updates
+#   @url            :   
+###############################################################################
+input_boolean:        
+  ha_update_available:
+    name: HA Update Avaiable
+    initial: off
+    icon: mdi:cloud-download
+
+sensor:
+  - platform: rest
+    resource: https://s3.amazonaws.com/hassio-version/stable.json
+    name: Latest HA Version
+    value_template: "{{ value_json.homeassistant.default }}"
+    scan_interval: 3600
+  - platform: version
+
+###############################################################################
+#                               Automations
+###############################################################################
+# automation:

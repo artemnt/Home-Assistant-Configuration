@@ -71,7 +71,7 @@ automation:
           entity_id: device_tracker.trent_trent
           state: '!secret work_state'
     action:
-    - service: notify.trent
+    - service: notify.telegram_trent
       data_template:
         message: "Unexpected Motion in Living Room Detected!"
   - alias: Device Tampering Notification
@@ -84,7 +84,7 @@ automation:
       entity_id: input_boolean.disable_device_tampering_notification
       state: 'off'
     action:
-    - service: notify.trent
+    - service: notify.telegram_trent
       data_template:
         message: "Tampering of Living Room Sensor Detected!"
   - alias: Current Temperature Notification
@@ -106,29 +106,29 @@ automation:
       - condition: or
         conditions:
         - condition: state
-          entity_id: device_tracker.trent_trent
+          entity_id: device_tracker.google_maps_109209758211303121867
           state: 'not_home'
         - condition: state
-          entity_id: device_tracker.trent_trent
+          entity_id: device_tracker.google_maps_109209758211303121867
           state: '!secret work_state'
     action:
-    - service: notify.trent
+    - service: notify.telegram_trent
       data_template:
         title: "Home Temperature"
         message: "Home is currently at {{ states.sensor.fibaro_motion_sensor_temperature.state }} °C."
         data:
-          actions:
-          - action: open
-            title: Open Home Assistant
-            url: !secret base_url
-          - action: startac
-            title: Start AC
-  - alias: startac push notification action button clicked
+          inline_keyboard:
+          - "Start AC:/startac"
+  - alias: 'Telegram bot callback /startac'
     trigger:
-    - platform: event
-      event_type: html5_notification.clicked
+      platform: event
+      event_type: telegram_callback
       event_data:
-        action: startac
+        data: '/startac'
     action:
     - service: script.turn_on
       entity_id: script.start_air_conditioner
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: '{{ trigger.event.data.id }}'
+        message: 'AC has been started.'
