@@ -97,7 +97,7 @@ automation:
         entity_id: light.livingroom
         brightness_pct: '100'
 
-# Living Room TV Media Player - Too Slow.
+# Living Room TV Media Player - Old Method, Too Slow.
 
 #  - alias: "Living Room TV - Playing"
 #    trigger:
