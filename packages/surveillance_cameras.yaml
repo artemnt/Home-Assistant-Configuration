@@ -27,6 +27,9 @@ image_processing:
       graph: /config/tensorflow/frozen_inference_graph.pb
       categories:
         - category: person
+          area:
+            # Exclude right 6% of image
+            right: 0.94
 #        - dog
 #        - car
 #        - truck

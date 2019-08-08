@@ -38,6 +38,11 @@ scene:
       light.livingroom:
         state: true
         brightness_pct: '100'
+  - name: Living Room Light Dim
+    entities:
+      light.livingroom:
+        state: true
+        brightness_pct: '5'
 
 ###############################################################################
 #                               Automations

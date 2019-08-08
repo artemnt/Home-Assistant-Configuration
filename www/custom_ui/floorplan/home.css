@@ -41,6 +41,18 @@ svg, svg * {
   stroke-width: 1px !important;
 }
 
+/* Light */
+
+.light-off {
+    opacity: 0.5 !important;
+    transition: opacity 1s;
+  }
+  
+  .light-on {
+    opacity: 0.0 !important;
+    transition: opacity 1s;
+  }
+
 /* Last motion entity */
 
 .last-motion {
@@ -54,16 +66,6 @@ svg, svg * {
 .camera-idle {
 /*  fill: #B9CEF7 !important; */
   fill: #6FAECE !important;
-}
-
-/* Switches */
-
-.switch-off {
-  fill: #C3B7F4 !important;
-}
-
-.switch-on {
-  fill: #ffff00 !important;
 }
 
 /* Temperature sensor */

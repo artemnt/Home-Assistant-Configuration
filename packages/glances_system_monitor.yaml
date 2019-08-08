@@ -8,6 +8,7 @@
 sensor:
 - platform: glances
   host: !secret glances_host
+  port: !secret glances_port
   username: !secret glances_username
   password: !secret glances_password
   name: TRENT-NUC

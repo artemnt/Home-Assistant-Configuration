@@ -1,0 +1,119 @@
+/* SVG shapes */
+
+svg, svg * {
+  vector-effect: non-scaling-stroke !important;
+  pointer-events: all !important;
+  /* Copy Theme */
+  background-color: var(--primary-background-color);
+}
+
+/* Hover over */
+
+.entity:hover {
+  stroke: #03A9F4 !important;
+  stroke-width: 1px !important;
+  stroke-opacity: 1 !important;
+}
+
+/* Bootstrap info */
+
+.info-text {
+  fill: #31708f !important;
+}
+
+.info-background, .info-text-background {
+  fill: #d9edf7 !important;
+  fill-opacity: 1 !important;
+  stroke: #bce8f1 !important;
+  stroke-width: 1px !important;
+}
+
+/* Bootstrap warning */
+
+.warning-text {
+  fill: #8a6d3b !important;
+}
+
+.warning-background, .warning-text-background  {
+  fill: #fcf8e3 !important;
+  fill-opacity: 1 !important;
+  stroke: #faebcc !important;
+  stroke-width: 1px !important;
+}
+
+/* Last motion entity */
+
+.last-motion {
+  stroke: #808080 !important;
+  stroke-width: 1px !important;
+  stroke-opacity: 1 !important;
+}
+
+/* Camera */
+
+.camera-idle {
+/*  fill: #B9CEF7 !important; */
+  fill: #6FAECE !important;
+}
+
+/* Switches */
+
+.switch-off {
+  fill: #C3B7F4 !important;
+}
+
+.switch-on {
+  fill: #ffff00 !important;
+}
+
+/* Temperature sensor */
+
+.temp-very-low {
+  fill: #6dcfff !important;
+  fill-opacity: 1 !important;
+}
+
+.temp-below-average {
+  fill: #69ffc7 !important;
+  fill-opacity: 1 !important;
+}
+
+.temp-average {
+  fill: #93ff65 !important;
+  fill-opacity: 1 !important;
+}
+
+.temp-very-high {
+  fill: #ff6d6d !important;
+  fill-opacity: 1 !important;
+}
+
+/* Media player */
+
+.mediaplayer-off {
+  fill: #8AA8A7 !important;
+}
+
+.mediaplayer-on {
+  fill: #00d5ce !important;
+}
+
+/* Windows */
+
+.window_closed {
+  fill: #67e8f5 !important;
+}
+
+.window_open {
+  fill: #f24456 !important;
+}
+
+/* Locks */
+
+.lock_locked {
+  fill: #67e8f5 !important;
+}
+
+.lock_unlocked {
+  fill: #f24456 !important;
+}

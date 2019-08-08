@@ -70,32 +70,28 @@
             '
         - name: Text Sensors
           entities:
-             - device_tracker.google_maps_109209758211303121867
-             - device_tracker.rachels_iphone
+             - person.trent
+             - person.rachel
              - sensor.time
              - sensor.date
           text_template: '${entity.state ? entity.state : "unknown"}'
-        - name: Switches
+        - name: Lights
           entities:
-             - switch.living_room_lamp
-             - light.trent_bedside
-             - light.rachel_bedside
-             - switch.outside_heater
-             - light.study_desk_lamp
+             - light.livingroom
+             - switch.diningroom_light
+             - switch.kitchen_light
              - switch.entryway_light
              - switch.entry_light
-             - light.livingroom
-             - switch.kitchen_light
-             - light.dining_room
-             - light.study
-             - light.projector_room
-             - light.bed_room
+             - light.trent_bedside
+             - light.rachel_bedside
+             - light.study_desk_lamp
           states:
             - state: 'on'
-              class: 'switch-on'
+              class: 'light-on'
             - state: 'off'
-              class: 'switch-off'
-
+              class: 'light-off'
+          action:
+            service: toggle
         - name: Binary sensors
           entities:
             - binary_sensor.motion

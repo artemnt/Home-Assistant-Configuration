@@ -1,0 +1,179 @@
+      name: Home Floorplan
+      image: /local/custom_ui/floorplan/home.svg
+      stylesheet: /local/custom_ui/floorplan/home.css
+      
+      # These options are optional
+      # warnings:            # enable warnings (to find out why things might not be working correctly)
+      # pan_zoom:            # enable experimental panning / zooming
+      hide_app_toolbar:    # hide the application toolbar (when used as a custom panel)
+
+      last_motion_entity: sensor.template_last_motion
+      last_motion_class: last-motion
+
+      groups:
+        - name: Dark Sky Sensors
+          entities:
+            - sensor.weather_icon
+          image_template: '
+            var imageName = "";
+
+            switch (entity.state) {
+              case "clear-day":
+                imageName = "day";
+                break;
+
+              case "clear-night":
+                imageName = "night";
+                break;
+
+              case "partly-cloudy-day":
+                imageName = "cloudy-day-1";
+                break;
+
+              case "partly-cloudy-night":
+                imageName = "cloudy-night-1";
+                break;
+
+              case "cloudy":
+                imageName = "cloudy";
+                break;
+
+              case "rain":
+                imageName = "rainy-1";
+                break;
+
+              case "snow":
+                imageName = "snowy-1";
+                break;
+            }
+
+            return "/local/custom_ui/floorplan/images/weather/" + imageName + ".svg";
+            '
+        - name: Sensors
+          entities:
+             - sensor.fibaro_motion_sensor_temperature
+             - sensor.temperature_158d0001a2e878
+             - sensor.weather_temperature
+          text_template: '${entity.state ? entity.state : "unknown"}°C'
+          # An example of rounding up a number, i.e. a temperature of 90.1 becomes 91
+          # text_template: '${entity.state ? Math.ceil(entity.state) : "undefined"}'  
+          class_template: '
+            var temp = parseFloat(entity.state.replace("°", ""));
+            if (temp < 10)
+              return "temp-very-low";
+            else if (temp < 15)
+              return "temp-below-average";
+            else if (temp < 22)
+              return "temp-medium";
+            else
+              return "temp-very-high";
+            '
+        - name: Text Sensors
+          entities:
+             - person.trent
+             - person.rachel
+             - sensor.time
+             - sensor.date
+          text_template: '${entity.state ? entity.state : "unknown"}'
+        - name: Switches
+          entities:
+             - switch.living_room_lamp
+             - light.trent_bedside
+             - light.rachel_bedside
+             - switch.outside_heater
+             - light.study_desk_lamp
+             - switch.entryway_light
+             - switch.entry_light
+             - light.livingroom
+             - switch.kitchen_light
+             - light.dining_room
+             - light.study
+             - light.projector_room
+             - light.bed_room
+          states:
+            - state: 'on'
+              class: 'switch-on'
+            - state: 'off'
+              class: 'switch-off'
+
+        - name: Binary sensors
+          entities:
+            - binary_sensor.motion
+          states:
+            - state: 'off'
+              class: 'info-background'
+            - state: 'on'
+              class: 'warning-background'
+          state_transitions:
+            - name: On to off
+              from_state: 'on'
+              to_state: 'off'
+              duration: 10
+
+        - name: Cameras
+          entities:
+            - camera.front_door
+            - camera.back_door
+          states:
+            - state: 'idle'
+              class: 'camera-idle'
+
+        - name: Media Players
+          entities:
+            - media_player.living_room_home
+            - media_player.tv_ua55ju6400
+            - media_player.living_room
+            - media_player.bed_room
+            - media_player.outside
+          states:
+            - state: 'off'
+              class: 'mediaplayer-off'
+            - state: 'idle'
+              class: 'mediaplayer-off'
+            - state: 'paused'
+              class: 'mediaplayer-on'
+            - state: 'playing'
+              class: 'mediaplayer-on'
+
+                #  WINDOWS  #
+        - name: Windows
+          entities:
+            - binary_sensor.window_bedroom
+            - binary_sensor.window_livingroom1
+            - binary_sensor.door_window_sensor_158d00019fbe38
+            - binary_sensor.door_window_sensor_158d0001a4a872
+            - binary_sensor.door_frontdoor
+            - binary_sensor.door_window_sensor_158d000186f0ec
+          states:
+            - state: 'off'
+              class: 'window_closed'
+            - state: 'on'
+              class: 'window_open'
+
+                #  Locks  #
+        - name: Locks
+          entities:
+            - lock.front_door
+          states:
+            - state: 'locked'
+              class: 'lock_locked'
+            - state: 'unlocked'
+              class: 'lock_unlocked'
+
+              
+#        - name: thermostat_temp
+#          entities:
+#            - climate.downstairs
+#            - climate.upstairs
+#          text_template: '${entity.attributes.current_temperature ? entity.attributes.current_temperature : "undefined"}'
+#
+# The above text_template uses extended attributes from the climate.* objects to get current temperature.
+
+#        - name: text_states
+#          entities:
+#            - sensor.downstairs_thermostat_humidity
+#            - sensor.dark_sky_temperature
+#            - sensor.last_message
+#          text_template: '${entity.state ? entity.state.replace(/\s{2,}/g,"") : "undefined"}'
+#
+# The above text_template uses jQuery syntax to search and replace any instance of 2 consecutive (or more) spaces in a string of text.

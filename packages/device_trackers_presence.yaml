@@ -9,7 +9,6 @@ device_tracker:
 # Google Maps API Tracking
   - platform: google_maps
     username: !secret google_mapsapi_username
-    password: !secret google_mapsapi_password
 # MQTT / Zanzito based device tracking
   - platform: mqtt_json
     devices:
@@ -47,5 +46,5 @@ group:
   family_presence:
     name: Family Presence
     entities:
-      - device_tracker.google_maps_109209758211303121867
-      - device_tracker.rachels_iphone
+      - person.trent
+      - person.rachel

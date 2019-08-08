@@ -63,7 +63,7 @@ binary_sensor:
     name: 'Trent Home'
     probability_threshold: 0.95
     observations:
-      - entity_id: 'device_tracker.google_maps_109209758211303121867'
+      - entity_id: 'person.trent'
         prob_given_true: 1
         platform: 'state'
         to_state: 'home'

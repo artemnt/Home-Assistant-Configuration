@@ -17,12 +17,6 @@ homeassistant:
       device_class: moving
       friendly_name: Living Room Tampering
 
-group:
-  motionsensors:
-      - binary_sensor.fibaro_motion_sensor_sensor
-      - binary_sensor.motion_hallway
-      - binary_sensor.motion_bedroom  
-
 binary_sensor:
   - platform: template
     sensors:
@@ -60,7 +54,7 @@ automation:
         entity_id: input_boolean.disable_unexpected_motion_notification
         state: 'off'
       - condition: state
-        entity_id: device_tracker.rachels_iphone
+        entity_id: person.rachel
         state: 'not_home'
       - condition: or
         conditions:
@@ -101,15 +95,15 @@ automation:
         entity_id: 'sensor.fibaro_motion_sensor_temperature'
         above: '23'
       - condition: state
-        entity_id: device_tracker.rachels_iphone
+        entity_id: person.rachel
         state: 'not_home'
       - condition: or
         conditions:
         - condition: state
-          entity_id: device_tracker.google_maps_109209758211303121867
+          entity_id: person.trent
           state: 'not_home'
         - condition: state
-          entity_id: device_tracker.google_maps_109209758211303121867
+          entity_id: person.trent
           state: '!secret work_state'
     action:
     - service: notify.telegram_trent

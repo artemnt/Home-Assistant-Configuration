@@ -1,0 +1,8 @@
+person.trent:
+  entity_picture: /local/trent-192x192.png
+person.rachel:
+  entity_picture: '"/local/rachel-192x192.png"'
+binary_sensor.motion_livingroom:
+  device_class: motion
+sensor.luminance_livingroom:
+  icon: mdi:brightness-5

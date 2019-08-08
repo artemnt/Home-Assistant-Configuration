@@ -24,11 +24,11 @@ binary_sensor:
       recent_arrival_trent:
         friendly_name: "Recent Arrival: Trent"
         value_template: >-
-          {{ states('sensor.time') and is_state("device_tracker.google_maps_109209758211303121867", "home") and as_timestamp(now()) - as_timestamp(states.device_tracker.google_maps_109209758211303121867.last_changed | default(0)) | int <= 60 * (states.input_number.consider_recent_arrival_mins.state | int) }}
+          {{ states('sensor.time') and is_state("person.trent", "home") and as_timestamp(now()) - as_timestamp(states.person.trent.last_changed | default(0)) | int <= 60 * (states.input_number.consider_recent_arrival_mins.state | int) }}
       recent_arrival_rachel:
         friendly_name: "Recent Arrival: Rachel"
         value_template: >-
-          {{ states('sensor.time') and is_state("device_tracker.rachels_iphone", "home") and as_timestamp(now()) - as_timestamp(states.device_tracker.rachels_iphone.last_changed | default(0)) | int <= 60 * (states.input_number.consider_recent_arrival_mins.state | int) }}
+          {{ states('sensor.time') and is_state("person.rachel", "home") and as_timestamp(now()) - as_timestamp(states.person.rachel.last_changed | default(0)) | int <= 60 * (states.input_number.consider_recent_arrival_mins.state | int) }}
 
 ###############################################################################
 #                               Automations

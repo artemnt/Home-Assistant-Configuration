@@ -5,6 +5,7 @@ homeassistant:
   elevation: !secret home_elevation
   unit_system: metric
   time_zone: Australia/Melbourne
+  customize: !include customize.yaml
   # Include Packages
   packages: !include_dir_named packages
   whitelist_external_dirs:
@@ -67,6 +68,7 @@ logbook:
       - sensor.date_time
       - sensor.time_date
       - sensor.nzbget_speed
+      - sensor.internet_time
 
 # Track the sun
 sun:
@@ -90,6 +92,16 @@ sensor:
   display_options:
     - 'time'
     - 'date'
+# Custom Component
+- platform: authenticated
+
+# Home Assistant Community Store
+hacs:
+  token: !secret my_github_access_token
+
+# Custom Component
+breaking_changes:
+
 
 # IFTTT Key
 ifttt:

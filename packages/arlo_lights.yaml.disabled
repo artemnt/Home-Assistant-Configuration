@@ -13,7 +13,7 @@ arlo:
   name: Arlo
   control: hidden
   entities:
-    - device_tracker.google_maps_109209758211303121867
+    - person.trent
 
 arlo:
   username: !secret arlo_username
