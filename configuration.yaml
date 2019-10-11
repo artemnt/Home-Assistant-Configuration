@@ -67,8 +67,9 @@ logbook:
       - sensor.date_2
       - sensor.date_time
       - sensor.time_date
-      - sensor.nzbget_speed
       - sensor.internet_time
+    domains:
+      - nzbget
 
 # Track the sun
 sun:

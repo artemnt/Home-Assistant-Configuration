@@ -1,6 +1,6 @@
 ###############################################################################
 #   @author         :   Trent Stanton
-#   @date           :   15/12/2018
+#   @date           :   11/10/2019
 #   @package        :   
 #   @description    :   Controls Downloads Within Network
 #   @url            :   
@@ -10,48 +10,40 @@ homeassistant:
     switch.nzbget_pause:
       friendly_name: NZBGet Pause Downloads
       icon: 'mdi:pause-circle'
-    sensor.nzbget_speed:
+    sensor.nzbget_download_rate:
       friendly_name: Current NZBGet Speed
       icon: 'mdi:download'
 
 input_boolean:
   disable_nzbget_unpause_schedule:
     name: Disable NZBGet Unpause Schedule
-    initial: off
     icon: 'mdi:download'
 
-sensor:
-  - platform: nzbget
-    host: !secret nzbget_ipaddress
-    port: !secret nzbget_port
-    username: !secret nzbget_username
-    password: !secret nzbget_password
-    monitored_variables:
-      - average_download_rate
-      - download_rate
-      - download_paused
-      - download_size
-      - remaining_size
-      - uptime
-
-## Taken from 'media_players.yaml'.
-#sensor:
-#  - platform: template
-#    sensors:
-#      living_room_tv_source:
-#        entity_id:
-#          - media_player.living_room_tv
-#        value_template: '{{ states.media_player.living_room_tv.attributes["source"] }}'
-#        friendly_name: 'Living Room TV Source'
+nzbget:
+  host: !secret nzbget_ipaddress
+  port: !secret nzbget_port
+  username: !secret nzbget_username
+  password: !secret nzbget_password
 
 switch:
-  - platform: command_line
+  - platform: template
     switches:
-# Control via API & Curl Commands
       nzbget_pause:
-        command_on: !secret nzbget_pause_switch_on
-        command_off: !secret nzbget_pause_switch_off
-        command_state: !secret nzbget_pause_switch_state
+        value_template: "{{ is_state('sensor.nzbget_download_paused', 'True') }}"
+        turn_on:
+          service: nzbget.pause
+        turn_off:
+          service: nzbget.resume
+
+# Old Configuration - Depreciated by HA NZBGet component.
+#switch:
+#  - platform: command_line
+#    switches:
+## Control via API & Curl Commands
+#      nzbget_pause:
+#        command_on: !secret nzbget_pause_switch_on
+#        command_off: !secret nzbget_pause_switch_off
+#        command_state: !secret nzbget_pause_switch_state
 
 ###############################################################################
 #                               Automations
