@@ -5,6 +5,7 @@ before_install:
   - sudo mkdir /share
   - mv packages/surveillance_cameras.yaml packages/surveillance_cameras.yaml.ignore
   - mv packages/smartir.yaml packages/smartir.yaml.ignore
+  - mv packages/custom_components.yaml packages/custom_components.yaml.ignore
   - mv travis_secrets.yaml secrets.yaml
 install:
   - pip3 install homeassistant
