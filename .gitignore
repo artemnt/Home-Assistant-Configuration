@@ -48,7 +48,6 @@ plex.conf
 phue.conf
 harmony_media_room.conf
 pyozw.sqlite
-!/.gitignore
 .storage
 .Trash-0
 *.config_entries
@@ -60,3 +59,5 @@ notebooks
 node-red
 tensorflow
 .google_maps_location*
+# Include the following
+!/.gitignore

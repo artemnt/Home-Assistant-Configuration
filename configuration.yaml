@@ -93,16 +93,6 @@ sensor:
   display_options:
     - 'time'
     - 'date'
-# Custom Component
-- platform: authenticated
-
-# Home Assistant Community Store
-hacs:
-  token: !secret my_github_access_token
-
-# Custom Component
-breaking_changes:
-
 
 # IFTTT Key
 ifttt:

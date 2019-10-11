@@ -1,0 +1,16 @@
+###############################################################################
+#   @author         :   Trent Stanton
+#   @date           :   11/10/2019
+#   @package        :   Custom Components
+#   @description    :   
+#   @url            :   
+###############################################################################
+# Home Assistant Community Store
+hacs:
+  token: !secret my_github_access_token
+
+breaking_changes:
+
+sensor:
+- platform: authenticated
+
